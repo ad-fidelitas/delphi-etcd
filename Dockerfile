@@ -1,19 +1,15 @@
-FROM golang:1.12.5-alpine
+FROM golang:1.12.5
 
 WORKDIR /usr/src/app
 
-RUN apk add --no-cache git mercurial \
-    && go get github.com/coreos/etcd \
-    && apk del git mercurial
-RUN echo $GOPATH
+# RUN apk add --no-cache git mercurial \
+RUN go get github.com/coreos/etcd 
+# && apk del git mercurial
+# ARG GOPATH=$GOPATH
 
-#COPY package*.json tsconfig.json swaggerDoc.js /usr/src/app/
-#RUN npm install
-
-#COPY src /usr/src/app/src/
-#RUN npm run build && rm -rf src
+ENV GOPATH $GOPATH
 
 EXPOSE 2379
 
-CMD [ "$GOPATH/bin/etcd" ]
 
+CMD ["sh", "-c", "${GOPATH}/bin/etcd"]
